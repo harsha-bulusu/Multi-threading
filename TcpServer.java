@@ -7,22 +7,14 @@ import java.net.Socket;
 
 public class TcpServer {
 
-    private void doSomethingHttp(Socket socket) {
-        try (InputStream inputStream = socket.getInputStream()) {
-            byte[] inputBytes = new byte[1024];
-            int bytesRead = inputStream.read(inputBytes);
-            System.out.println("Bytes Read: " + bytesRead);
-            String input = new String(inputBytes);
-            System.out.println(input);
-            OutputStream outputStream = socket.getOutputStream();
-            String output = "HTTP/1.1 200 OK\r\n\r\nHello, World!\r\n";
-            outputStream.write(output.getBytes());
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * This block sends a http formatted response over a TCP connection. If a TCP client receives it it cannot parse response and logs in raw format
+     * where as if a http client invokes it it can parse it into a HTTP standard response
+     * 
+     * TCP test: "netcat localhost 8080" -- TCP client
+     * HTTP test: "curl http://localhost:8080" --  HTTP client
+     * @param socket
+     */
     private void doSomethingTcp(Socket socket) {
         try (InputStream inputStream = socket.getInputStream()) {
             byte[] inputBytes = new byte[1024];
